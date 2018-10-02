@@ -6,7 +6,6 @@ import './TodoList.scss';
 class TodoList extends Component {
   constructor(props) {
     super(props);
-    this.toggle = this.toggle.bind(this);
     this.state = {
       todoId: 0,
       showDetail: true,
@@ -19,7 +18,6 @@ class TodoList extends Component {
       ]
     };
   }
-
   toggle(id) {
     this.setState({showDetail: !this.state.showDetail})
     this.setState({todoId: id})

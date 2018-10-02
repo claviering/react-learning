@@ -13,9 +13,12 @@ class Main extends Component {
       showDetail: true 
     }
   }
-  changeMain () {
+  changeMain = () => {
     this.setState({showDetail: !this.state.showDetail})
   }
+
+  toAdd = () => this.state.showDetail ? '/add' : '/'
+
   render() {
     return (
       <div className="Main">
@@ -28,8 +31,7 @@ class Main extends Component {
               <Route path="/404" component={NoFind} />
               <Redirect from='*' to='/404' />
             </Switch>
-            {this.state.showDetail && <Link onClick={this.changeMain.bind(this)} to='add'><Add icon="plus-circle"/></Link>}
-            {!this.state.showDetail && <Link onClick={this.changeMain.bind(this)} to='/'><Add icon="arrow-back"/></Link>}
+            {<Link onClick={this.changeMain} to={this.toAdd()}><Add icon={this.state.showDetail} /></Link>}
           </div>
         </Router>
       </div>

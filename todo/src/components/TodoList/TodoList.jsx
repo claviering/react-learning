@@ -1,31 +1,44 @@
 import React, { Component } from 'react';
-import { Collapse, CardBody, Card, ListGroup, ListGroupItem } from 'reactstrap';
+import { Redirect } from "react-router-dom";
+import { ListGroup, ListGroupItem } from 'reactstrap';
 import './TodoList.scss';
 
 class TodoList extends Component {
   constructor(props) {
     super(props);
     this.toggle = this.toggle.bind(this);
-    this.state = { collapse: false };
+    this.state = {
+      todoId: 0,
+      showDetail: true,
+      collapse: false,
+      todo: [
+        {id: 1, title: 'title1'},
+        {id: 2, title: 'title2'},
+        {id: 3, title: 'title3'},
+        {id: 4, title: 'title4'}
+      ]
+    };
   }
-  toggle() {
-    this.setState({ collapse: !this.state.collapse });
+
+  toggle(id) {
+    this.setState({showDetail: !this.state.showDetail})
+    this.setState({todoId: id})
   }
   render () {
-    return (
-      <div className="TodoList">
-        <ListGroup className="todoList">
-          <ListGroupItem onClick={this.toggle}>todo 1</ListGroupItem>
-            <Collapse isOpen={this.state.collapse}>
-              <Card>
-                <CardBody>
-                  love
-                </CardBody>
-              </Card>
-            </Collapse>
+    let list = this.state.todo.map((item) => (
+      <ListGroupItem onClick={this.toggle.bind(this, item.id)} key={item.title}>
+        <div>{item.title}</div>
+      </ListGroupItem>
+    ))
+    if (this.state.showDetail) {
+      return (
+        <ListGroup>
+          {list}
         </ListGroup>
-      </div>
-    )
+      )
+    } else {
+      return (<Redirect to={'/detail/' + this.state.todoId} />)
+    }
   }
 }
 

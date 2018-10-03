@@ -1,0 +1,1 @@
+export const go_back = () => ({type: 'go_back_icon'})

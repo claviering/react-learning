@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Redirect } from "react-router-dom";
 import { ListGroup, ListGroupItem } from 'reactstrap';
 import './TodoList.scss';
+import * as actions from '../../redux/actions';
 
 class TodoList extends Component {
   constructor(props) {
@@ -21,6 +22,7 @@ class TodoList extends Component {
   toggle(id) {
     this.setState({showDetail: !this.state.showDetail})
     this.setState({todoId: id})
+    this.props.store.dispatch(actions.go_back())
   }
   render () {
     let list = this.state.todo.map((item) => (

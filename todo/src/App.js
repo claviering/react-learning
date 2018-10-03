@@ -4,14 +4,11 @@ import Head from '@/components/Head/Head.jsx';
 import Main from '@/components/Main/Main.jsx';
 
 class App extends Component {
-  componentDidMount () {
-    console.log(this.props.store.getState())
-  }
   render() {
     return (
       <div className="App container">
         <Head></Head>
-        <Main></Main>
+        <Main store={ this.props.store}></Main>
       </div>
     );
   }

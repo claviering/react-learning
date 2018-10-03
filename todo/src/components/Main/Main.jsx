@@ -13,25 +13,28 @@ class Main extends Component {
       showDetail: true 
     }
   }
+  store = this.props.store
   changeMain = () => {
-    this.setState({showDetail: !this.state.showDetail})
+    this.setState({ showDetail: !this.state.showDetail })
   }
+  unsubscribe = this.store.subscribe(this.changeMain)
 
-  toAdd = () => this.state.showDetail ? '/add' : '/'
+  toUrl = () => this.state.showDetail ? '/add' : '/'
 
+  tmpTodoList = () => (<TodoList store={ this.store }></TodoList>)
   render() {
     return (
       <div className="Main">
         <Router>
           <div>
             <Switch>
-              <Route exact path="/" component={TodoList} />
-              <Route path="/add" component={AddTodo} />
-              <Route exact path="/detail/:id" component={Detail} />
-              <Route path="/404" component={NoFind} />
+              <Route exact path="/" component={ this.tmpTodoList } />
+              <Route path="/add" component={ AddTodo } />
+              <Route exact path="/detail/:id" component={ Detail } />
+              <Route path="/404" component={ NoFind } />
               <Redirect from='*' to='/404' />
             </Switch>
-            {<Link onClick={this.changeMain} to={this.toAdd()}><Add icon={this.state.showDetail} /></Link>}
+            {<Link onClick={ this.changeMain } to={ this.toUrl() }><Add icon={ this.state.showDetail } /></Link>}
           </div>
         </Router>
       </div>

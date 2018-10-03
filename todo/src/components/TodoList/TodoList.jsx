@@ -3,20 +3,30 @@ import { Redirect } from "react-router-dom";
 import { ListGroup, ListGroupItem } from 'reactstrap';
 import './TodoList.scss';
 import * as actions from '../../redux/actions';
+import { getTodoList } from '@/api/api.js';
+
+let ISGET = true
+
+let tmptodo = []
 
 class TodoList extends Component {
+  UNSAFE_componentWillMount () {
+    if (!ISGET) {
+      return false
+    }
+    getTodoList()
+      .then((res) => {
+        tmptodo = res.data
+        this.setState({todo: res.data})
+        ISGET = false
+      })
+  }
   constructor(props) {
     super(props);
     this.state = {
       todoId: 0,
       showDetail: true,
-      collapse: false,
-      todo: [
-        {id: 1, title: 'title1'},
-        {id: 2, title: 'title2'},
-        {id: 3, title: 'title3'},
-        {id: 4, title: 'title4'}
-      ]
+      todo: []
     };
   }
   toggle(id) {
@@ -25,7 +35,7 @@ class TodoList extends Component {
     this.props.store.dispatch(actions.go_back())
   }
   render () {
-    let list = this.state.todo.map((item) => (
+    let list = tmptodo.map((item) => (
       <ListGroupItem onClick={this.toggle.bind(this, item.id)} key={item.title}>
         <div>{item.title}</div>
       </ListGroupItem>
@@ -37,7 +47,11 @@ class TodoList extends Component {
         </ListGroup>
       )
     } else {
-      return (<Redirect to={'/detail/' + this.state.todoId} />)
+      let path = {
+        pathname: '/detail/' + this.state.todoId,
+        state: tmptodo[this.state.todoId - 1]
+      }
+      return (<Redirect to={ path } />)
     }
   }
 }

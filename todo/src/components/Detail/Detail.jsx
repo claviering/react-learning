@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 
 class Detail extends Component {
   render () {
+    var data = this.props.location.state;
     return (
       <div className="Detail">
-        <h2>detail page</h2>
-        <h2>{this.props.match.params.id}</h2>
+        <h2>{data.content}</h2>
       </div>
     );
   }

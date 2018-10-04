@@ -16,7 +16,7 @@ class TodoList extends Component {
     }
     getTodoList()
       .then((res) => {
-        tmptodo = res.data
+        tmptodo = res.data.data
         this.setState({todo: res.data})
         ISGET = false
       })
@@ -35,8 +35,8 @@ class TodoList extends Component {
     this.props.store.dispatch(actions.go_back())
   }
   render () {
-    let list = tmptodo.map((item) => (
-      <ListGroupItem onClick={this.toggle.bind(this, item.id)} key={item.title}>
+    let list = tmptodo.map((item, index) => (
+      <ListGroupItem onClick={this.toggle.bind(this, index)} key={item.title}>
         <div>{item.title}</div>
       </ListGroupItem>
     ))
@@ -49,7 +49,7 @@ class TodoList extends Component {
     } else {
       let path = {
         pathname: '/detail/' + this.state.todoId,
-        state: tmptodo[this.state.todoId - 1]
+        state: tmptodo[this.state.todoId]
       }
       return (<Redirect to={ path } />)
     }

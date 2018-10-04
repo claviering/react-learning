@@ -17,9 +17,9 @@ class AddTodo extends Component {
     let content = document.getElementById('todoText').value
     if (title.length === 0 || content.length === 0) {
       let newSate = {
+        isOpen: true,
         saveMsg: '输入不能为空',
-        msgColor: 'danger',
-        isOpen: true
+        msgColor: 'danger'
       }
       this.setState(newSate)
       return
@@ -30,9 +30,11 @@ class AddTodo extends Component {
     }
     addTodoList(data)
       .then((res) => {
+        let type = ''
+        res.data.code === 0 ? type = 'error' : type = 'success'
         let newSate = {
-          saveMsg: res.data,
-          msgColor: 'success',
+          saveMsg: res.data.msg,
+          msgColor: type,
           isOpen: true
         }
         this.setState(newSate)

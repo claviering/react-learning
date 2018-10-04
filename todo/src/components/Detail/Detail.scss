@@ -1,0 +1,14 @@
+.operTypeBox{
+  display: flex;
+  justify-content: space-around;
+  padding-top: 10%;
+}
+.noBorder{
+  border: 0px;
+  .inputBox{
+    display: flex;
+    flex-direction: column;
+    height: 300px;
+    justify-content: space-around;
+  }
+}

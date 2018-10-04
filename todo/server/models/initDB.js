@@ -1,18 +1,19 @@
 const assert = require('assert')
 const insert = require('./insert')
-const find = require('./find')
+const get = require('./get')
+const update = require('./update')
+const deleteData = require('./delete')
+const dbconfig = require('./DBconfig')
 
 const MongoClient = require('mongodb').MongoClient;
-const url = 'mongodb://localhost:27017/';
-const dbName = 'todo';
 
 const oper = (type, data) => new Promise((resolve, reject) => {
-  MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
+  MongoClient.connect(dbconfig.url, { useNewUrlParser: true }, (err, client) => {
     assert.equal(null, err)
-      let db = client.db(dbName)
+      let db = client.db(dbconfig.dbName)
       switch (type) {
         case 'insert':
-          insert(db, data)
+          insert.insert(db, data)
           .then(res => {
             resolve(res)
             client.close()
@@ -22,8 +23,8 @@ const oper = (type, data) => new Promise((resolve, reject) => {
             client.close()
           })
         break
-        case 'findAll':
-          find.findAll(db, data)
+        case 'get':
+          get.get(db, data)
           .then(res => {
             resolve(res)
             client.close()
@@ -32,15 +33,24 @@ const oper = (type, data) => new Promise((resolve, reject) => {
             reject(error)
           })
         break
-        case 'findMaxId':
-          find.findMaxId(db)
+        case 'update':
+          update.update(db, data)
           .then(res => {
             resolve(res)
             client.close()
           })
           .catch(error => {
             reject(error)
+          })
+        break
+        case 'delete':
+          deleteData.deleteData(db, data)
+          .then(res => {
+            resolve(res)
             client.close()
+          })
+          .catch(error => {
+            reject(error)
           })
         break
         default:

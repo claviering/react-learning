@@ -1,17 +1,15 @@
 const dbconfig = require('./DBconfig')
 const successMsg = {
   code: 1,
-  msg: '添加成功'
+  msg: '删除成功'
 }
 const errorMsg = {
   code: 0,
-  msg: '添加失败'
+  msg: '删除失败'
 }
-// @param db 数据库
-// @param data 插入的数据
-exports.insert = (db, data) => new Promise((resolve, reject) => {
+exports.deleteData = (db, data) => new Promise((resolve, reject) => {
   const collection = db.collection(dbconfig.collection)
-  collection.insertOne(data, (err, result) => {
+  collection.deleteOne(data, (err, result) => {
     result.result.n !== 1 ? reject(errorMsg) : resolve(successMsg)
   })
 })

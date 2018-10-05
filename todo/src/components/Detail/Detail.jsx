@@ -1,12 +1,19 @@
 import React, { Component } from 'react';
 import { Button, Collapse, Card, CardBody, Input, Alert } from 'reactstrap';
+import { Redirect } from 'react-router-dom'
 import './Detail.scss'
 import { updateTodo } from '@/api/api.js';
 import { deleteTodo } from '@/api/api.js';
 
 class Detail extends Component {
+  componentWillMount () {
+    try {
+      this.setState({curContent: this.props.location.state.content})
+    } catch (err) {
+    }
+  }
   state = {
-    curContent: this.props.location.state.content,
+    curContent: '',
     collapse: false,
     isOpen: false,
     msgColor: '',
@@ -30,6 +37,8 @@ class Detail extends Component {
     .then(res => {
       if (res.data.code === 1) {
         this.toggleAlert('success', res.data.msg)
+      } else {
+        this.toggleAlert('danger', res.data.msg)
       }
     })
     .catch(err => {
@@ -60,6 +69,9 @@ class Detail extends Component {
     })
   }
   render () {
+    if (this.state.curContent === '') {
+      return <Redirect to='/404' />
+    }
     return (
       <div className="Detail">
         <h2>{ this.state.curContent }</h2>

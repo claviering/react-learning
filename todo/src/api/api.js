@@ -10,4 +10,8 @@ const url = {
 export const getTodoList = () => instance.get(url.todoList)
 export const addTodoList = (data) => instance.post(url.todoList, data)
 export const updateTodo = (data) => instance.put(url.todoList, data)
-export const deleteTodo = (data) => instance.delete(url.todoList, data)
+export const deleteTodo = (data) =>  instance({
+  method: 'delete',
+  url: url.todoList, 
+  data: data
+})

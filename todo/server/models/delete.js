@@ -8,6 +8,11 @@ const errorMsg = {
   msg: '删除失败'
 }
 exports.deleteData = (db, data) => new Promise((resolve, reject) => {
+  console.log(data)
+  if (data.content === undefined) {
+    reject(errorMsg)
+    return
+  }
   const collection = db.collection(dbconfig.collection)
   collection.deleteOne(data, (err, result) => {
     result.result.n !== 1 ? reject(errorMsg) : resolve(successMsg)

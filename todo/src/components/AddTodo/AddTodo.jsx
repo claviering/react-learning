@@ -31,7 +31,7 @@ class AddTodo extends Component {
     addTodoList(data)
       .then((res) => {
         let type = ''
-        res.data.code === 0 ? type = 'error' : type = 'success'
+        res.data.code === 0 ? type = 'danger' : type = 'success'
         let newSate = {
           saveMsg: res.data.msg,
           msgColor: type,

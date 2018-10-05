@@ -1,11 +1,11 @@
 const dbconfig = require('./DBconfig')
 const successMsg = {
   code: 1,
-  msg: '添加成功'
+  msg: '获取成功'
 }
 const errorMsg = {
   code: 0,
-  msg: '添加失败'
+  msg: '获取失败'
 }
 exports.get = (db, data = {}) => new Promise((resolve, reject) => {
   const collection = db.collection(dbconfig.collection)

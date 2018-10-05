@@ -5,20 +5,14 @@ import './TodoList.scss';
 import * as actions from '../../redux/actions';
 import { getTodoList } from '@/api/api.js';
 
-let ISGET = true
-
 let tmptodo = []
 
 class TodoList extends Component {
   UNSAFE_componentWillMount () {
-    if (!ISGET) {
-      return false
-    }
     getTodoList()
       .then((res) => {
         tmptodo = res.data.data
         this.setState({todo: res.data})
-        ISGET = false
       })
   }
   constructor(props) {

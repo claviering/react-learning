@@ -6,7 +6,8 @@ import { deleteTodo } from '@/api/api.js';
 
 class Detail extends Component {
   state = {
-    collapse: true,
+    curContent: this.props.location.state.content,
+    collapse: false,
     isOpen: false,
     msgColor: '',
     msg: ''
@@ -18,8 +19,12 @@ class Detail extends Component {
     this.setState({collapse: !this.state.collapse})
   }
   deleteTodo = () => {
+    let isDelete = window.confirm('确定要删除?')
+    if (!isDelete) {
+      return 
+    }
     let data = {
-      content: this.props.location.state.content
+      content: this.state.curContent
     }
     deleteTodo(data)
     .then(res => {
@@ -38,28 +43,26 @@ class Detail extends Component {
       this.toggleAlert('danger', '不能为空')
       return
     }
+    this.setState({curContent: newContent})
     let newTodo = { 
-      oldContent: this.props.location.state.content,
+      oldContent: this.state.curContent,
       newTitle: newTitle,
       newContent: newContent
     }
-    console.log(newTodo);
     updateTodo(newTodo)
     .then(res => {
       if (res.data.code === 1) {
         this.toggleAlert('success', res.data.msg)
       }
-      console.log(res)
     })
     .catch(err => {
       console.log(err)
     })
   }
   render () {
-    var data = this.props.location.state;
     return (
       <div className="Detail">
-        <h2>{data.content}</h2>
+        <h2>{ this.state.curContent }</h2>
         <div className="operTypeBox">
           <Button color="primary" onClick={this.showUpdate}>修改</Button>
           <Button onClick={this.deleteTodo} color="danger">删除</Button>

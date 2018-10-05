@@ -7,57 +7,55 @@ const dbconfig = require('./DBconfig')
 
 const MongoClient = require('mongodb').MongoClient;
 
+let oneDB = null
+
+MongoClient.connect(dbconfig.url, { useNewUrlParser: true }, (err, client) => {
+  assert.equal(null, err)
+    oneDB = client.db(dbconfig.dbName)
+})
+
 const oper = (type, data) => new Promise((resolve, reject) => {
-  MongoClient.connect(dbconfig.url, { useNewUrlParser: true }, (err, client) => {
-    assert.equal(null, err)
-      let db = client.db(dbconfig.dbName)
-      switch (type) {
-        case 'insert':
-          insert.insert(db, data)
-          .then(res => {
-            resolve(res)
-            client.close()
-          })
-          .catch(error => {
-            reject(error)
-            client.close()
-          })
-        break
-        case 'get':
-          get.get(db, data)
-          .then(res => {
-            resolve(res)
-            client.close()
-          })
-          .catch(error => {
-            reject(error)
-          })
-        break
-        case 'update':
-          update.update(db, data)
-          .then(res => {
-            resolve(res)
-            client.close()
-          })
-          .catch(error => {
-            reject(error)
-          })
-        break
-        case 'delete':
-          deleteData.deleteData(db, data)
-          .then(res => {
-            resolve(res)
-            client.close()
-          })
-          .catch(error => {
-            reject(error)
-          })
-        break
-        default:
-          console.log('no type')
-          client.close()
-      }
-  })
+  switch (type) {
+    case 'insert':
+      insert.insert(oneDB, data)
+      .then(res => {
+        resolve(res)
+        client.close()
+      })
+      .catch(error => {
+        reject(error)
+      })
+    break
+    case 'get':
+      get.get(oneDB, data)
+      .then(res => {
+        resolve(res)
+      })
+      .catch(error => {
+        reject(error)
+      })
+    break
+    case 'update':
+      update.update(oneDB, data)
+      .then(res => {
+        resolve(res)
+      })
+      .catch(error => {
+        reject(error)
+      })
+    break
+    case 'delete':
+      deleteData.deleteData(oneDB, data)
+      .then(res => {
+        resolve(res)
+      })
+      .catch(error => {
+        reject(error)
+      })
+    break
+    default:
+      console.log('no type')
+  }
 })
 
 module.exports = oper

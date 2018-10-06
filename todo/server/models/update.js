@@ -8,6 +8,10 @@ const errorMsg = {
   msg: '更新失败'
 }
 exports.update = (db, data) => new Promise((resolve, reject) => {
+  if (data.newTitle.length > 10 || data.newContent.length > 30) {
+    reject(errorMsg)
+    return
+  }
   let oldData = {
     content: data.oldContent
   }
